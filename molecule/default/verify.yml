@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Check conda package version
+      ansible.builtin.command: /opt/miniconda3/bin/conda list -p /opt/envs/my_prefix c-compiler --json
+      register: conda_out
+      failed_when: (conda_out.stdout | from_json)[0].version != '1.5.2'
+
+    - name: Check pip package version
+      ansible.builtin.command: /opt/miniconda3/bin/conda list -p /opt/envs/my_prefix setuptools --json
+      register: conda_out
+      failed_when:
+        - (conda_out.stdout | from_json)[0].version != '68.2.2'
+        - (conda_out.stdout | from_json)[0].platform != 'pypi'

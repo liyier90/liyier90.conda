@@ -36,4 +36,3 @@
     conda_env_conda_bin: "{{ conda_env_conda_bin }}"
     conda_env_conda_dir: "{{ conda_env_conda_dir }}"
     conda_env_prefix: "{{ conda_env_prefix }}"
-
