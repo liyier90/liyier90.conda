@@ -1,0 +1,11 @@
+---
+# defaults file for conda_env
+conda_env_conda_dir: /opt/miniconda3
+conda_env_escalate: false
+conda_env_exe: conda
+# Update environment based on the supplied environment.yaml if environment is present
+conda_env_update_if_present: false
+
+# conda_env_environment: <path/to/environment.yml>
+# conda_env_pip_requirements: <path/to/requirements.txt>
+# conda_env_prefix: <path/to/conda/environment/prefix>

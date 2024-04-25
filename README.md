@@ -1,2 +1,3 @@
-# liyier90.conda
-Manage conda environment and packages with Ansible
+# Ansible Collection - liyier90.conda
+
+Documentation for the collection.

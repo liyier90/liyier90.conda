@@ -1,0 +1,39 @@
+---
+# tasks file for conda_env
+- name: Create directory {{ conda_env_env_yamls }}
+  become: "{{ conda_env_escalate }}"
+  become_user: root
+  ansible.builtin.file:
+    path: "{{ conda_env_env_yamls }}"
+    state: directory
+    mode: "0755"
+
+- name: Injecting {{ conda_env_dest_environment }}
+  become: "{{ conda_env_escalate }}"
+  become_user: root
+  ansible.builtin.template:
+    src: "{{ conda_env_environment }}"
+    dest: "{{ conda_env_dest_environment }}"
+    mode: "0644"
+
+- name: Create/Update the conda environment
+  become: "{{ conda_env_escalate }}"
+  become_user: root
+  ansible.builtin.command: "{{ conda_env_conda_bin }} env {{ conda_env_action_command }} -q -f {{ conda_env_dest_environment }} -p {{ conda_env_prefix }}"
+  args:
+    creates: "{{ conda_env_prefix }}"
+  register: create_env_output
+  failed_when: create_env_output.rc != 0
+
+- name: Install pip requirements
+  ansible.builtin.pip:
+    requirements: "{{ conda_env_pip_requirements }}"
+    executable: "{{ conda_env_pip_bin }}"
+  when: conda_env_pip_requirements is defined
+
+- name: Set conda fact
+  ansible.builtin.set_fact:
+    conda_env_conda_bin: "{{ conda_env_conda_bin }}"
+    conda_env_conda_dir: "{{ conda_env_conda_dir }}"
+    conda_env_prefix: "{{ conda_env_prefix }}"
+
