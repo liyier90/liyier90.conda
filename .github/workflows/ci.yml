@@ -49,7 +49,25 @@ jobs:
       - name: Install test dependencies
         run: pip3 install -r requirements-dev.txt
 
-      - name: Run Molecule tests.
+      - name: Run Molecule tests
         run: molecule test
         env:
           MOLECULE_DISTRO: ${{ matrix.os }}
+
+  ansible-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checks out codebase
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: pip3 install -r requirements-dev.txt
+
+      - name: Run Ansible tests
+        run: bash scripts/test.sh
+

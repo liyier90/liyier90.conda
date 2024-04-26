@@ -1,0 +1,23 @@
+---
+- name: Ensure mkl is uninstalled
+  ansible.builtin.command: "{{ conda_bin }} list -p {{ conda_prefix }} mkl --json"
+  register: absent_mkl
+
+- name: Install mkl
+  liyier90.conda.conda:
+    name:
+      - mkl==2023.1.0
+    channel:
+      - conda-forge
+    prefix: "{{ conda_prefix }}"
+    executable: "{{ conda_bin }}"
+
+- name: Ensure mkl is installed
+  ansible.builtin.command: "{{ conda_bin }} list -p {{ conda_prefix }} mkl --json"
+  register: present_mkl
+
+- name: Check assertions
+  ansible.builtin.assert:
+    that:
+      - (absent_mkl.stdout | from_json | length) == 0
+      - (present_mkl.stdout | from_json | length) == 0
