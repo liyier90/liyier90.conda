@@ -14,4 +14,5 @@ cp -r "$(dirname -- "${script_dir}")/"* "${collection_dir}"
 
 cd "${collection_dir}"
 ansible-test sanity
+ansible-test units -v --docker ubuntu2204
 ansible-test integration --docker ubuntu2204

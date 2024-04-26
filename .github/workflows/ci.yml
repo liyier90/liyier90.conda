@@ -3,6 +3,9 @@ name: CI
 "on":
   - pull_request
   - push
+env:
+  NAMESPACE: liyier90
+  COLLECTION_NAME: conda
 
 jobs:
   lint:
@@ -54,11 +57,13 @@ jobs:
         env:
           MOLECULE_DISTRO: ${{ matrix.os }}
 
-  ansible-test:
+  sanity:
     runs-on: ubuntu-latest
     steps:
       - name: Checks out codebase
         uses: actions/checkout@v4
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION_NAME }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -66,7 +71,67 @@ jobs:
           python-version: "3.x"
 
       - name: Install test dependencies
-        run: pip3 install -r requirements-dev.txt
+        run: |
+          cd ansible_collections/$NAMESPACE/$COLLECTION_NAME
+          pip3 install -r requirements-dev.txt
 
-      - name: Run Ansible tests
-        run: bash scripts/test.sh
+      - name: Run Ansible sanity tests
+        run: |
+          cd ansible_collections/$NAMESPACE/$COLLECTION_NAME
+          ansible-test sanity
+
+  units:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - fedora38
+          - ubuntu2204
+    steps:
+      - name: Checks out codebase
+        uses: actions/checkout@v4
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION_NAME }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: |
+          cd ansible_collections/$NAMESPACE/$COLLECTION_NAME
+          pip3 install -r requirements-dev.txt
+
+      - name: Run Ansible unit tests
+        run: |
+          cd ansible_collections/$NAMESPACE/$COLLECTION_NAME
+          ansible-test units --docker ${{ matrix.os }}
+
+  integration:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - fedora38
+          - ubuntu2204
+    steps:
+      - name: Checks out codebase
+        uses: actions/checkout@v4
+        with:
+          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION_NAME }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install test dependencies
+        run: |
+          cd ansible_collections/$NAMESPACE/$COLLECTION_NAME
+          pip3 install -r requirements-dev.txt
+
+      - name: Run Ansible integration tests
+        run: |
+          cd ansible_collections/$NAMESPACE/$COLLECTION_NAME
+          ansible-test integration --docker ${{ matrix.os }}

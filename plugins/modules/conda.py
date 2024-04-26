@@ -84,13 +84,6 @@ except Exception:
     PACKAGING_IMP_ERR = traceback.format_exc()
 
 
-class CondaExecutableNotFoundError(Exception):
-    """Error raised when the Conda executable was not found."""
-
-    def __init__(self):
-        super().__init__("Conda executable not found.")
-
-
 def run_module():
     module = AnsibleModule(
         argument_spec=dict(
@@ -117,7 +110,7 @@ def run_module():
     if prefix is not None and not os.path.exists(prefix):
         module.fail_json(msg=f"Conda prefix ({prefix}) not found.")
 
-    conda = _get_conda(module.params["executable"])
+    conda = _get_conda(module, module.params["executable"])
     cmd = conda + ["install", "-y", "--json"]
 
     if channel is not None:
@@ -172,20 +165,25 @@ def main():
     run_module()
 
 
-def _get_conda(executable):
+def _get_conda(module, executable):
     """If `executable` is not None, checks whether it points to a valid file
     and returns it if this is the case. Otherwise tries to find the `conda`
     executable in the path. Calls `fail_json` if either of these fail.
     """
+    conda = None
     if executable is None:
         conda = shutil.which("conda")
-        if conda is not None:
-            return [conda]
     else:
         if os.path.isfile(executable):
-            return [executable]
+            conda = executable
 
-    raise CondaExecutableNotFoundError()
+    if conda is None:
+        module.fail_json(msg="Conda executable not found.")
+
+    if not isinstance(conda, list):
+        conda = [conda]
+
+    return conda
 
 
 def _get_packages(module, conda, prefix):
