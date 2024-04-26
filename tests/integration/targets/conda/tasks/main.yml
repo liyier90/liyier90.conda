@@ -1,0 +1,7 @@
+---
+- ansible.builtin.import_tasks: setup.yml
+- block:
+    - ansible.builtin.import_tasks: test_general.yml
+      vars:
+        conda_bin: /opt/miniconda3/bin/conda
+        conda_prefix: /opt/envs/my_prefix

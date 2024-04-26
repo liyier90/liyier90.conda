@@ -1,0 +1,27 @@
+---
+- block:
+    - name: Download Miniconda3
+      ansible.builtin.get_url:
+        url: https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        dest: /opt/miniconda3.sh
+        mode: "0755"
+
+    - name: Install Miniconda3
+      ansible.builtin.command:
+        cmd: bash /opt/miniconda3.sh -b -p /opt/miniconda3
+        creates: /opt/miniconda3
+
+    - name: Copy requirements.txt
+      ansible.builtin.copy:
+        src: requirements.txt
+        dest: /opt/requirements.txt
+        mode: "0755"
+
+    - name: Setup conda environment
+      ansible.builtin.include_role:
+        name: liyier90.conda.conda_env
+      vars:
+        conda_env_conda_dir: /opt/miniconda3
+        conda_env_environment: files/environment.yml
+        conda_env_pip_requirements: /opt/requirements.txt
+        conda_env_prefix: /opt/envs/my_prefix

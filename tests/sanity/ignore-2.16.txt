@@ -1,0 +1,2 @@
+plugins/modules/conda.py validate-modules:missing-gplv3-license
+tests/unit/plugins/modules/conftest.py future-import-boilerplate

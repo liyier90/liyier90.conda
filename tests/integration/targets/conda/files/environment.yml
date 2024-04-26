@@ -1,0 +1,11 @@
+---
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - c-compiler=1.5.2
+  - cxx-compiler=1.5.2
+  - cmake=3.29.2
+  - ninja=1.11.1
+  - sysroot_linux-64=2.17

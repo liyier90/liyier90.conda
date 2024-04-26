@@ -1,4 +1,4 @@
-Role Name
+conda\_env
 =========
 
 Creates a conda environment at the specified prefix.
@@ -19,7 +19,7 @@ conda_env_escalate: false
 conda_env_exe: conda
 conda_env_update_if_present: false
 ```
-- `conda_env_conda_dir` should point to the directory of your conda installation. 
+- `conda_env_conda_dir` should point to the directory of your conda installation.
 - `conda_env_escalate` states whether the commands should be run as root.
 - `conda_env_exe` is the of your conda executable, this is typically `conda`.
 - `conda_env_update_if_present` states the behavior when a conda environment with the same name/prefix exists. `true` if we want to update it else throw an error.

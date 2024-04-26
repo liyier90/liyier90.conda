@@ -1,10 +1,9 @@
 ---
 exclude_paths:
-  - molecule/default/converge.yml
-  - molecule/default/verify.yml
-  - molecule/default/collections.yml
   - .github
   - environment-dev.yml
+  - molecule/*
+  - tests/*
 
 skip_list:
   - yaml[truthy]
