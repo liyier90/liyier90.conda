@@ -20,4 +20,4 @@
   ansible.builtin.assert:
     that:
       - (absent_mkl.stdout | from_json | length) == 0
-      - (present_mkl.stdout | from_json | length) == 0
+      - (present_mkl.stdout | from_json | length) == 1
