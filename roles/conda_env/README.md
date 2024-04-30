@@ -15,7 +15,7 @@ conda_env_conda_dir: /opt/miniconda3
 conda_env_escalate: false
 conda_env_exe: conda
 conda_env_update_if_present: false
-conda_env_yaml_dir: /opt/conda-env-yamls
+conda_env_yaml_dir: "{{ conda_env_conda_dir }}/conda-env-yamls
 ```
 
 - `conda_env_conda_dir` should point to the directory of your conda installation.

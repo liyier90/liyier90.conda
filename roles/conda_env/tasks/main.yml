@@ -1,10 +1,10 @@
 ---
 # tasks file for conda_env
-- name: Create directory {{ conda_env_env_yamls }}
+- name: Create directory {{ conda_env_yaml_dir }}
   become: "{{ conda_env_escalate }}"
   become_user: root
   ansible.builtin.file:
-    path: "{{ conda_env_env_yamls }}"
+    path: "{{ conda_env_yaml_dir }}"
     state: directory
     mode: "0755"
 
