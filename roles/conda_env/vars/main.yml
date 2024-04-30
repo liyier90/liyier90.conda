@@ -3,6 +3,5 @@
 conda_env_action_command: "{% if conda_env_update_if_present %}update{% else %}create{% endif %}"
 conda_env_bin_dir: "{{ conda_env_conda_dir }}/bin"
 conda_env_conda_bin: "{{ conda_env_bin_dir }}/{{ conda_env_exe }}"
-conda_env_dest_environment: "{{ conda_env_env_yamls }}/{{ conda_env_prefix | basename }}-{{ conda_env_environment | basename }}"
-conda_env_env_yamls: "{{ conda_env_conda_dir }}/env-yamls"
+conda_env_dest_environment: "{{ conda_env_yaml_dir }}/{{ conda_env_prefix | basename }}-{{ conda_env_environment | basename }}"
 conda_env_pip_bin: "{{ conda_env_prefix }}/bin/pip"
